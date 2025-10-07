@@ -27,7 +27,7 @@ func NewTracerProvider(opt ...Option) *TracerProvider {
 	once.Do(func() {
 		tp := &TracerProvider{}
 		tp.opts = &Options{
-			Endpoint:        "localhost:43180",
+			Endpoint:        "localhost:43170",
 			ServiceName:     "localtrace",
 			BatchSize:       512,
 			QueueSize:       8192,
