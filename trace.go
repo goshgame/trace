@@ -74,6 +74,7 @@ func NewTracerProvider(opt ...Option) *TracerProvider {
 		)
 		globalTracerProvider = tp
 	})
+
 	return globalTracerProvider
 }
 
