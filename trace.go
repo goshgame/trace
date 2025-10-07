@@ -78,6 +78,11 @@ func NewTracerProvider(opt ...Option) *TracerProvider {
 	return globalTracerProvider
 }
 
+// GetTracerProvider get TracerProvider
+func GetTracerProvider() *TracerProvider {
+	return globalTracerProvider
+}
+
 // Tracer get Tracer
 func (tp *TracerProvider) Tracer() *sdktrace.TracerProvider {
 	return tp.provider
