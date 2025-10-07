@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -93,4 +95,26 @@ func (tp *TracerProvider) Close() {
 	ctx, cancel := context.WithTimeout(context.Background(), tp.opts.ShutdownTimeout)
 	defer cancel()
 	tp.provider.Shutdown(ctx)
+}
+
+// RunSpan run span
+func (tp *TracerProvider) RunSpan(ctx context.Context, name string, fn func(ctx context.Context) error, attrs ...attribute.KeyValue) error {
+	tr := tp.Tracer().Tracer("run-span")
+	ctx, span := tr.Start(ctx, name)
+	defer span.End()
+
+	if len(attrs) > 0 {
+		span.SetAttributes(attrs...)
+	}
+
+	start := time.Now()
+	err := fn(ctx)
+	span.SetAttributes(attribute.Int64("latency_ms", time.Since(start).Milliseconds()))
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "success")
+	}
+	return err
 }
