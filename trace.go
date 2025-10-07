@@ -5,7 +5,9 @@ import (
 	"sync"
 	"time"
 
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
@@ -62,6 +64,13 @@ func NewTracerProvider(opt ...Option) *TracerProvider {
 				semconv.SchemaURL,
 				semconv.ServiceNameKey.String(tp.opts.ServiceName),
 			)),
+		)
+		otel.SetTracerProvider(tp.provider)
+		otel.SetTextMapPropagator(
+			propagation.NewCompositeTextMapPropagator(
+				propagation.TraceContext{},
+				propagation.Baggage{},
+			),
 		)
 		globalTracerProvider = tp
 	})
