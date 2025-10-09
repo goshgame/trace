@@ -5,6 +5,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/goshgame/gcomponent/env"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -19,6 +20,8 @@ import (
 var (
 	globalTracerProvider *TracerProvider
 	once                 sync.Once
+	defaultTestEndPoint  string = "a2a50f438d5374cc482d82269c04ee7a-758565007.ap-southeast-1.elb.amazonaws.com:4317"
+	defaultProdEndPoint  string = "TODO"
 )
 
 type TracerProvider struct {
@@ -29,9 +32,13 @@ type TracerProvider struct {
 // NewTracerProvider get TracerProvider
 func NewTracerProvider(opt ...Option) *TracerProvider {
 	once.Do(func() {
+		endPoint := defaultTestEndPoint
+		if env.IsProd() {
+			endPoint = defaultProdEndPoint
+		}
 		tp := &TracerProvider{}
 		tp.opts = &Options{
-			Endpoint:        "localhost:43170",
+			Endpoint:        endPoint,
 			ServiceName:     "localtrace",
 			BatchSize:       512,
 			QueueSize:       8192,
