@@ -3,6 +3,7 @@ module github.com/goshgame/trace
 go 1.24.1
 
 require (
+	github.com/cloudwego/hertz v0.9.3
 	github.com/goshgame/gcomponent v0.0.0-20250929071918-920963f65ded
 	go.opentelemetry.io/otel v1.38.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.38.0
@@ -11,6 +12,7 @@ require (
 )
 
 require (
+	github.com/bytedance/gopkg v0.1.1 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
