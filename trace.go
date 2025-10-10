@@ -120,8 +120,10 @@ func (tp *TracerProvider) RunSpan(ctx context.Context, name string, fn func(ctx 
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
+		span.SetAttributes(attribute.Int("biz_code", 1))
 	} else {
 		span.SetStatus(codes.Ok, "success")
+		span.SetAttributes(attribute.Int("biz_code", 0))
 	}
 	return err
 }
