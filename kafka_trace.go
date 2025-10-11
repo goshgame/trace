@@ -21,7 +21,7 @@ func InjectTraceToKafkaMessage(ctx context.Context, msg *kafka.Message) {
 }
 
 // ExtractTraceFromKafkaMessage - extract from kafka message
-func ExtractTraceFromKafkaMessage(ctx context.Context, msg kafka.Message) context.Context {
+func ExtractTraceFromKafkaMessage(ctx context.Context, msg *kafka.Message) context.Context {
 	carrier := propagation.MapCarrier{}
 	for _, h := range msg.Headers {
 		carrier[h.Key] = string(h.Value)
