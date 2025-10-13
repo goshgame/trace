@@ -21,9 +21,10 @@ var (
 	globalTracerProvider *TracerProvider
 	once                 sync.Once
 	defaultTestEndPoint  string = "a2a50f438d5374cc482d82269c04ee7a-758565007.ap-southeast-1.elb.amazonaws.com:4317"
-	defaultProdEndPoint  string = "TODO"
+	defaultProdEndPoint  string = "ab16de23a5e2f465f905241e7590d82c-431378024.ap-southeast-1.elb.amazonaws.com:4317"
 )
 
+// TracerProvider tracer provider
 type TracerProvider struct {
 	opts     *Options
 	provider *sdktrace.TracerProvider
