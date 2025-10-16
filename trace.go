@@ -14,6 +14,7 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
+	oteltrace "go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
 )
 
@@ -103,6 +104,13 @@ func (tp *TracerProvider) Close() {
 	ctx, cancel := context.WithTimeout(context.Background(), tp.opts.ShutdownTimeout)
 	defer cancel()
 	tp.provider.Shutdown(ctx)
+}
+
+// NewSpan new span
+func (tp *TracerProvider) NewSpan(ctx context.Context, spanName string, opts ...oteltrace.SpanStartOption) (context.Context, oteltrace.Span) {
+	tr := tp.Tracer().Tracer("new-span")
+	spanCtx, span := tr.Start(ctx, spanName, opts...)
+	return spanCtx, span
 }
 
 // RunSpan run span
